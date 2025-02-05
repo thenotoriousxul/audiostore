@@ -17,6 +17,36 @@ exports.getPedidosRepartidor = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+exports.getPedidos = async (req, res) => {
+  try {
+    const pedidos = await Pedidos.findAll({
+      where: {
+        estado_envio: "Pendiente",
+      },
+    });
+
+    res.status(200).json(pedidos); // Responde con los pedidos encontrados
+  } catch (error) {
+    console.error("Error fetching pedidos:", error); // Log para depurar
+    res.status(500).json({ error: error.message }); // Respuesta en caso de error
+  }
+};
+
+exports.elegirPedido = async (req, res) => {
+  try {
+    const pedido = await Pedidos.findByPk(req.params.id);
+    if (!pedido) {
+      return res.status(404).json({ message: 'Pedido no encontrado' });
+    }
+    pedido.estado_envio = req.body.estado_envio;
+    await pedido.save();
+    res.status(200).json(pedido);
+  } catch (error) {
+    console.error('Error al actualizar el pedido:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 
 exports.createPedido = async (req, res) => {
   const t = await sequelize.transaction();
