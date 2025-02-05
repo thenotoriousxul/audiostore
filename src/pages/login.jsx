@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Form, Button, Card, Container } from 'react-bootstrap';
+import NavbarComponent from '/src/Components/Navbar';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -22,9 +23,7 @@ const Login = () => {
         const data = await response.json();
         console.log('Iniciando sesión con:', data);
         localStorage.setItem('token', data.accessToken);
-        localStorage.setItem('userId', data.id);
-        console.log('Usuario logueado:', data);
-        navigate('/catalogo'); // Redirigir a la página del catálogo
+        navigate('/catalogo');
       } else {
         const errorData = await response.json();
         alert('Error en el inicio de sesión: ' + errorData.message);
@@ -35,45 +34,52 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
+    <div className="login-container bg-black text-white">
+      {/* Botón de Atrás */}
+      <Link to="/" className="btn btn-light position-absolute top-0 start-0 m-3">
+        Atrás
+      </Link>
+
       <Container className="d-flex justify-content-center align-items-center vh-100">
-        <Card className="overlay p-4" style={{ width: '25rem' }}>
+        <Card className="overlay p-4" style={{ width: '25rem', backgroundColor: '#222', borderColor: '#fff' }}>
           <Card.Body>
-            <h2 className="text-center text-primary mb-4">Iniciar Sesión</h2>
+            <h2 className="text-center text-white mb-4">Iniciar Sesión</h2>
             <Form onSubmit={handleLogin}>
               {/* Email */}
               <Form.Group className="mb-3">
-                <Form.Label>Correo Electrónico</Form.Label>
+                <Form.Label className="text-white">Correo Electrónico</Form.Label>
                 <Form.Control 
                   type="email" 
                   placeholder="Ingresa tu correo"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
+                  className="bg-dark text-white border-white"
                 />
               </Form.Group>
 
               {/* Contraseña */}
               <Form.Group className="mb-3">
-                <Form.Label>Contraseña</Form.Label>
+                <Form.Label className="text-white">Contraseña</Form.Label>
                 <Form.Control 
                   type="password" 
                   placeholder="Ingresa tu contraseña"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  className="bg-dark text-white border-white"
                 />
               </Form.Group>
 
               {/* Botón de Iniciar Sesión */}
-              <Button variant="primary" type="submit" className="w-100">
+              <Button variant="light" type="submit" className="w-100">
                 Iniciar Sesión
               </Button>
             </Form>
 
             {/* Enlace a registro */}
             <div className="text-center mt-3">
-              <p>¿No tienes cuenta? <Link to="/registro" className="text-primary">Regístrate aquí</Link></p>
+              <p className="text-white">¿No tienes cuenta? <Link to="/registro" className="text-light">Regístrate aquí</Link></p>
             </div>
           </Card.Body>
         </Card>
