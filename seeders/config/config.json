@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "root",
-    "password": "",
-    "database": "symphony",
+    "password": "871212",
+    "database": "airstore",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },

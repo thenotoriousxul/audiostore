@@ -1,5 +1,5 @@
 .register-container {
-    background-image: url('/src/assets/banner2registro.jpg'); /* Cambia por la ruta de tu imagen de fondo */
+    background-color: black; /* Cambia por la ruta de tu imagen de fondo */
     background-size: cover;
     background-position: center;
     min-height: 100vh;
@@ -9,7 +9,7 @@
   }
 
   .login-container {
-    background-image: url('/src/assets/banner2registro.jpg'); /* Cambia por la ruta de tu imagen de fondo */
+    background-color: black; /* Cambia por la ruta de tu imagen de fondo */
     background-size: cover;
     background-position: center;
     min-height: 100vh;
@@ -19,7 +19,7 @@
   }
 
   .Employee-container {
-    background-image: url('/src/assets/banner3.jpg'); /* Cambia por la ruta de tu imagen de fondo */
+    background-color: black; /* Cambia por la ruta de tu imagen de fondo */
     background-size: cover;
     background-position: center;
     min-height: 100vh;
@@ -92,4 +92,26 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+/* Asegura que todos los cards tengan la misma altura */
+.card-equal-height {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+
+
+/* Estilo para el botón negro con letras blancas */
+button.btn-dark {
+  background-color: black;
+  color: white;
+  border: none;
+  font-weight: bold;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  transition: transform 0.3s ease;
 }
