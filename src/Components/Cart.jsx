@@ -126,15 +126,15 @@ function Cart() {
   };
 
   return (
-    <div>
+    <div className="d-flex flex-column min-vh-100 bg-black text-white">
       <NavbarComponent cart={cart} />
       <div className="container my-5">
-        <h2 className="mb-4 text-center text-info fw-bold">Carrito de Compras</h2>
+        <h2 className="mb-4 text-center text-white fw-bold">Carrito de compras</h2>
         {cartItems.length > 0 ? (
           <Row xs={1} sm={2} md={3} lg={4} className="g-4">
             {cartItems.map((item) => (
               <Col key={item.id}>
-                <Card className="shadow-lg rounded card-equal-height">
+                <Card className="shadow-lg rounded card-equal-height" data-aos="zoom-in" data-aos-duration="1000">
                   <Card.Img variant="top" src={item.imagepath} className="card-img-top" />
                   <Card.Body>
                     <Card.Title className="text-center text-uppercase">{item.nombre}</Card.Title>
