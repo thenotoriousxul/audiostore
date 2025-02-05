@@ -115,3 +115,99 @@ button.btn-dark {
   transform: translateY(-5px);
   transition: transform 0.3s ease;
 }
+
+
+/* Fondo oscuro para la página */
+.register-container {
+  background-color: #121212; /* Fondo negro */
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white; /* Texto blanco */
+}
+
+.overlay {
+  background-color: #1f1f1f; /* Fondo gris oscuro */
+  padding: 2rem;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Estilos del formulario */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-label {
+  color: white; /* Etiquetas blancas */
+}
+
+/* Estilos generales de los inputs */
+.form-control {
+  background-color: #333; /* Fondo oscuro para inputs */
+  border: 1px solid #444; /* Borde sutil */
+  color: white; /* Texto blanco en inputs */
+  padding: 0.5rem; /* Agrega algo de espacio interno */
+}
+
+/* Al estar en focus */
+.form-control:focus {
+  border-color: #888; /* Borde más claro en foco */
+  background-color: #222; /* Fondo más oscuro al hacer focus */
+  color: white; /* Asegura que el texto siga siendo blanco al estar en foco */
+}
+
+/* Asegurarse que los inputs tengan color visible también cuando no están en foco */
+.form-control::-webkit-input-placeholder {
+  color: #888; /* Color de los placeholders */
+}
+
+.form-control:focus::-webkit-input-placeholder {
+  color: #aaa; /* Color de los placeholders cuando están en foco */
+}
+
+
+/* Botón de enviar */
+.btn-primary {
+  background-color: #555; /* Color de fondo gris oscuro */
+  border-color: #777; /* Borde gris */
+  color: white; /* Texto blanco */
+}
+
+.btn-primary:hover {
+  background-color: #444; /* Fondo aún más oscuro al pasar el ratón */
+  border-color: #666; /* Borde más claro al pasar el ratón */
+}
+
+/* Progreso de pasos */
+.progress-dots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background-color: #444; /* Color de los puntos */
+  border-radius: 50%;
+}
+
+.dot.active {
+  background-color: #fff; /* Puntos activos blancos */
+}
+
+
+/* Estilo para el botón de "Atrás" */
+.back-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+}
