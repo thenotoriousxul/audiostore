@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Row, Col, Card, Modal, Form } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom'; // Importa useNavigate
+import { useNavigate } from 'react-router-dom';
 import NavbarComponent from '/src/Components/Navbar';
 import MapSelector from '/src/Components/MapSelector';
 import '/main.css';
 
 function Cart() {
-  const navigate = useNavigate(); // Hook para redirección
-  const [cart, setCart] = useState(() => {
-    const savedCart = localStorage.getItem('cart');
-    return savedCart ? JSON.parse(savedCart) : {};
-  });
+  const navigate = useNavigate();
+  const [cart, setCart] = useState(() => JSON.parse(localStorage.getItem('cart')) || {});
   const [items, setItems] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [address, setAddress] = useState('');
@@ -27,7 +24,6 @@ function Cart() {
         console.error('Error fetching productos:', error);
       }
     };
-
     fetchProductos();
   }, []);
 
@@ -45,13 +41,16 @@ function Cart() {
           console.error('Error fetching user:', error);
         }
       };
-
       fetchUser();
     }
   }, []);
 
+
+
+  
+
   const handleQuantityChange = (id, amount) => {
-    setCart((prevCart) => {
+    setCart(prevCart => {
       const newQuantity = (prevCart[id] || 0) + amount;
       if (newQuantity <= 0) {
         const { [id]: _, ...rest } = prevCart;
@@ -72,58 +71,63 @@ function Cart() {
 
   const handleAddressChange = (e) => setAddress(e.target.value);
 
+  const handleSelectLocation = (location) => {
+    setSelectedLocation(location);
+    setAddress(location.address); // Guarda la dirección seleccionada
+  };
+
   const handleRealizarPedido = async () => {
     if (!user) {
-      alert('Debes iniciar sesión para realizar un pedido');
+      alert("Debes iniciar sesión para realizar un pedido");
       return;
     }
-
+  
+    if (!selectedLocation) {
+      alert("Debes seleccionar una ubicación en el mapa");
+      return;
+    }
+  
     const pedido = {
       fecha_realizacion: new Date(),
       clienteId: user.id,
       direccion: address,
-      estado_envio: 'Pendiente',
-      estado_pago: 'Pendiente',
+      coordenadas: { lat: selectedLocation.lat, lng: selectedLocation.lng }, // Ahora es un objeto con lat y lng
+      estado_envio: "Pendiente",
+      estado_pago: "Pendiente",
       forma_pagoId: 1,
-      detalles: cartItems.map(item => ({
-        productoId: item.id,
-        cantidad: cart[item.id],
-        precio: item.precio
-      }))
+      detalles: items
+        .filter((item) => cart[item.id])
+        .map((item) => ({
+          productoId: item.id,
+          cantidad: cart[item.id],
+          precio: item.precio,
+        })),
     };
-
+  
     try {
-      const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:3000/pedidos', {
-        method: 'POST',
+      const token = localStorage.getItem("token");
+      const response = await fetch("http://localhost:3000/pedidos", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'x-access-token': token
+          "Content-Type": "application/json",
+          "x-access-token": token,
         },
-        body: JSON.stringify(pedido)
+        body: JSON.stringify(pedido),
       });
-
+  
       if (response.ok) {
-        const data = await response.json();
-        console.log('Pedido realizado:', data);
         setCart({});
-        localStorage.removeItem('cart');
-        handleCloseModal();
-        
-        // 🚀 Redirección al seguimiento del pedido
-        navigate('/seguimiento');
+        localStorage.removeItem("cart");
+        setShowModal(false);
+  
+        navigate("/seguimiento", { state: { destination: pedido.coordenadas } }); // 🔥 Ahora enviamos la ubicación seleccionada
       } else {
         const errorData = await response.json();
-        console.error('Error al realizar el pedido:', errorData);
+        console.error("Error al realizar el pedido:", errorData);
       }
     } catch (error) {
-      console.error('Error al realizar el pedido:', error);
+      console.error("Error al realizar el pedido:", error);
     }
-  };
-
-  const handleSelectLocation = (location) => {
-    setSelectedLocation(location);
-    setAddress(location.address);
   };
 
   return (
@@ -133,7 +137,7 @@ function Cart() {
         <h2 className="mb-4 text-center text-white fw-bold">Carrito de compras</h2>
         {cartItems.length > 0 ? (
           <Row xs={1} sm={2} md={3} lg={4} className="g-4">
-            {cartItems.map((item) => (
+            {cartItems.map(item => (
               <Col key={item.id}>
                 <Card className="shadow-lg rounded card-equal-height">
                   <Card.Img variant="top" src={item.imagepath} className="card-img-top" />
@@ -189,27 +193,15 @@ function Cart() {
           <Modal.Title>Detalles del Pedido</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {cartItems.length > 0 ? (
-            <div className="d-flex flex-column align-items-center">
-              <Form.Group className="mt-3 w-100">
-                <Form.Label>Ingresa tu Dirección</Form.Label>
-                <Form.Control type="text" value={address} onChange={handleAddressChange} />
-              </Form.Group>
-              <div className="mt-3 w-100">
-                <MapSelector onSelectLocation={handleSelectLocation} />
-              </div>
-            </div>
-          ) : (
-            <p className="text-center">No hay productos en el carrito.</p>
-          )}
+          <Form.Group className="mt-3 w-100">
+            <Form.Label>Ingresa tu Dirección</Form.Label>
+            <Form.Control type="text" value={address} onChange={handleAddressChange} />
+          </Form.Group>
+          <MapSelector onSelectLocation={handleSelectLocation} />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Cancelar
-          </Button>
-          <Button variant="primary" onClick={handleRealizarPedido}>
-            Realizar Pedido
-          </Button>
+          <Button variant="secondary" onClick={handleCloseModal}>Cancelar</Button>
+          <Button variant="primary" onClick={handleRealizarPedido}>Realizar Pedido</Button>
         </Modal.Footer>
       </Modal>
     </div>
