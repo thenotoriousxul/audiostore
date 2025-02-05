@@ -5,8 +5,8 @@ exports.getPedidosRepartidor = async (req, res) => {
     console.log('User ID:', req.userId); // Log para verificar el userId
     const pedidos = await Pedidos.findAll({
       where: {
-        estado_envio: ['En Proceso', 'En Camino', 'Entregado'],
-        ...(req.userId && { repartidorId: req.userId })
+        estado_envio: ['Pendiente', 'En Proceso', 'En Camino', 'Entregado'],
+        repartidorId: req.userId
       },
       include: [{ model: DetallesDePedido, as: 'detalles' }]
     });

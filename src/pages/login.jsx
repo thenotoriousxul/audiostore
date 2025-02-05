@@ -21,7 +21,9 @@ const Login = () => {
       if (response.ok) {
         const data = await response.json();
         console.log('Iniciando sesión con:', data);
-        localStorage.setItem('token', data.accessToken); // Almacenar el token JWT
+        localStorage.setItem('token', data.accessToken);
+        localStorage.setItem('userId', data.id);
+        console.log('Usuario logueado:', data);
         navigate('/catalogo'); // Redirigir a la página del catálogo
       } else {
         const errorData = await response.json();
