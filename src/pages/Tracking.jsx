@@ -41,8 +41,8 @@ const TrackingMap = () => {
                     }));
                     setRoute(points);
 
-                    const duration = result.routes[0].legs[0].duration.text;
-                    setEstimatedTime(duration);
+                    let durationInSeconds = result.routes[0].legs[0].duration.value;
+                    setEstimatedTime(`${Math.ceil(durationInSeconds / 60)} min`);
                 }
             }
         );
@@ -52,14 +52,19 @@ const TrackingMap = () => {
         if (route.length === 0) return;
 
         let step = 0;
+        let remainingTime = parseInt(estimatedTime); 
+
         const interval = setInterval(() => {
             if (step < route.length) {
                 setOrigin(route[step]);
                 step++;
+                remainingTime = Math.max(remainingTime - 1, 0);
+                setEstimatedTime(`${remainingTime} min`);
             } else {
                 clearInterval(interval);
+                alert("El repartidor ha llegado a su destino");
             }
-        }, 1000);
+        }, 2000); // Movimiento más lento
 
         return () => clearInterval(interval);
     }, [route]);
