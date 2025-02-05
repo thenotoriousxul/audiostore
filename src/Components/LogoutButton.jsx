@@ -10,7 +10,7 @@ const LogoutButton = () => {
   };
 
   return (
-    <button className="btn btn-primary btn-sm text-white" onClick={handleLogout} style={{ padding: '5px 10px', fontSize: '14px' }}>
+    <button className="btn btn-light btn-sm text-black" onClick={handleLogout} style={{ padding: '5px 10px', fontSize: '14px' }}>
       Cerrar Sesión
     </button>
   );
