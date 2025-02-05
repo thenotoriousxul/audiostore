@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Row, Col, Card, Modal, Form } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom'; // Importa useNavigate
 import NavbarComponent from '/src/Components/Navbar';
 import MapSelector from '/src/Components/MapSelector';
 import '/main.css';
 
 function Cart() {
+  const navigate = useNavigate(); // Hook para redirección
   const [cart, setCart] = useState(() => {
     const savedCart = localStorage.getItem('cart');
     return savedCart ? JSON.parse(savedCart) : {};
@@ -13,7 +15,7 @@ function Cart() {
   const [showModal, setShowModal] = useState(false);
   const [address, setAddress] = useState('');
   const [selectedLocation, setSelectedLocation] = useState(null);
-  const [user, setUser] = useState(null); // Estado para almacenar el usuario
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const fetchProductos = async () => {
@@ -30,15 +32,12 @@ function Cart() {
   }, []);
 
   useEffect(() => {
-    // Obtener el token del localStorage
     const token = localStorage.getItem('token');
     if (token) {
       const fetchUser = async () => {
         try {
           const response = await fetch('http://localhost:3000/auth/me', {
-            headers: {
-              'x-access-token': token
-            }
+            headers: { 'x-access-token': token }
           });
           const data = await response.json();
           setUser(data);
@@ -107,10 +106,12 @@ function Cart() {
       if (response.ok) {
         const data = await response.json();
         console.log('Pedido realizado:', data);
-        // Limpia el carrito después de realizar el pedido
         setCart({});
         localStorage.removeItem('cart');
         handleCloseModal();
+        
+        // 🚀 Redirección al seguimiento del pedido
+        navigate('/seguimiento');
       } else {
         const errorData = await response.json();
         console.error('Error al realizar el pedido:', errorData);
@@ -134,7 +135,7 @@ function Cart() {
           <Row xs={1} sm={2} md={3} lg={4} className="g-4">
             {cartItems.map((item) => (
               <Col key={item.id}>
-                <Card className="shadow-lg rounded card-equal-height" data-aos="zoom-in" data-aos-duration="1000">
+                <Card className="shadow-lg rounded card-equal-height">
                   <Card.Img variant="top" src={item.imagepath} className="card-img-top" />
                   <Card.Body>
                     <Card.Title className="text-center text-uppercase">{item.nombre}</Card.Title>
@@ -190,15 +191,6 @@ function Cart() {
         <Modal.Body>
           {cartItems.length > 0 ? (
             <div className="d-flex flex-column align-items-center">
-              {cartItems.map((item, index) => (
-                <div key={index} className="m-2 text-center" style={{ width: "250px" }}>
-                  <img src={item.imagepath} alt={item.nombre} className="img-fluid rounded mb-2" style={{ maxHeight: "150px", objectFit: "cover" }} />
-                  <h6>{item.nombre}</h6>
-                  <p className="text-muted">{item.descripcion}</p>
-                  <p className="text-muted">Cantidad: {cart[item.id]}</p>
-                  <p className="text-muted">Precio: ${item.precio}</p>
-                </div>
-              ))}
               <Form.Group className="mt-3 w-100">
                 <Form.Label>Ingresa tu Dirección</Form.Label>
                 <Form.Control type="text" value={address} onChange={handleAddressChange} />

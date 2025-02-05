@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import AutocompleteInput from "/src/Components/AutocompleteInput"; // Ajusta la ruta según tu estructura de carpetas
+import AutocompleteInput from "/src/Components/AutocompleteInput";
 
 const MapPage = () => {
   const [location, setLocation] = useState(null);
 
   const handleSelect = (selectedLocation) => {
-    console.log("Dirección seleccionada:", selectedLocation); // Verifica en la consola si las coordenadas son correctas
+    console.log("Dirección seleccionada:", selectedLocation);
     setLocation(selectedLocation);
   };
 
