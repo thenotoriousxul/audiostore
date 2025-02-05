@@ -54,6 +54,16 @@ function Register() {
   return (
     <div className="register-container">
       <div className="overlay">
+        
+        {/* Botón de Atrás en la esquina superior izquierda */}
+        <button
+          type="button"
+          className="btn btn-light position-absolute top-0 start-0 m-3"
+          onClick={() => navigate('/')}
+        >
+          Atrás
+        </button>
+
         <h2 className="mb-4 text-center">Registro</h2>
         <form onSubmit={handleSubmit} className="form-container">
           {/* Paso 1: Datos Personales */}
@@ -128,8 +138,8 @@ function Register() {
                 <label className="form-label">Contraseña:</label>
                 <input
                   type="password"
-                  className="form-control"
                   name="contraseña"
+                  className="form-control"
                   value={formData.contraseña}
                   onChange={handleChange}
                   required
@@ -138,7 +148,7 @@ function Register() {
             </>
           )}
 
-          <button type="submit" className="btn btn-primary w-100">
+          <button type="submit" className="btn btn-light btn-sm text-black w-100">
             {step === 1 ? 'Continuar' : 'Registrar'}
           </button>
         </form>
