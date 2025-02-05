@@ -10,15 +10,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AxelYYa/SymphonyMusicStage.git"
+    "url": "git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/AxelYYa/SymphonyMusicStage/issues"
+    "url": ""
   },
-  "homepage": "https://github.com/AxelYYa/SymphonyMusicStage#readme",
+  "homepage": "",
   "dependencies": {
     "@react-google-maps/api": "^2.20.5",
     "@vitejs/plugin-react": "^4.3.4",
