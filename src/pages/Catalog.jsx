@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Button, Row, Col, Form, Pagination } from 'react-bootstrap';
 import NavbarComponent from '/src/Components/Navbar';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import '/main.css';
 
 function Catalogo() {
@@ -14,6 +16,7 @@ function Catalogo() {
   const itemsPerPage = 8;
 
   useEffect(() => {
+    AOS.init();
     const fetchProductos = async () => {
       try {
         const response = await fetch('http://localhost:3000/productos');
@@ -80,10 +83,10 @@ function Catalogo() {
   const uniqueCategories = [...new Set(items.map(item => item.categoria && item.categoria.nombre).filter(Boolean))];
 
   return (
-    <div>
+    <div className="d-flex flex-column min-vh-100 bg-black text-white">
       <NavbarComponent cart={cart} />
       <div className="container my-5">
-        <h2 className="mb-4 text-center text-info fw-bold">Catálogo de Productos</h2>
+<h2 className="mb-4 text-center text-white fw-bold">Catálogo de productos</h2>
 
         <Form.Group controlId="categorySelect" className="mb-4">
           <Form.Label className="h5">Filtrar por Categoría</Form.Label>
@@ -92,6 +95,7 @@ function Catalogo() {
             value={selectedCategory} 
             onChange={handleCategoryChange} 
             className="form-control-lg shadow-sm"
+            data-aos="fade-up" 
           >
             <option value="">Todas las categorías</option>
             {uniqueCategories.map(category => (
@@ -103,41 +107,42 @@ function Catalogo() {
         <Row xs={1} sm={2} md={3} lg={4} className="g-4">
           {currentItems.map((item) => (
             <Col key={item.id}>
-              <Card className="shadow-lg rounded card-equal-height">
-                <Card.Img variant="top" src={item.imagepath} className="card-img-top" />
-                <Card.Body>
-                  <Card.Title className="text-center text-uppercase">{item.nombre}</Card.Title>
-                  <Card.Text className="text-center text-muted">{item.descripcion}</Card.Text>
-                  <div className="d-flex justify-content-between align-items-center">
-                    <span className="text-primary fw-bold">${item.precio}</span>
-                    <div className="d-flex align-items-center">
-                      <Button 
-                        variant={item.quantity > 0 ? "primary" : "secondary"} 
-                        onClick={() => handleQuantityChange(item.id, -1)}
-                        disabled={item.quantity <= 0 || cart[item.id]}
-                      >
-                        -
-                      </Button>
-                      <span className="mx-2 fw-bold">{item.quantity || 0}</span>
-                      <Button 
-                        variant="primary" 
-                        onClick={() => handleQuantityChange(item.id, 1)}
-                        disabled={item.quantity >= 3 || cart[item.id]}
-                      >
-                        +
-                      </Button>
-                    </div>
-                  </div>
-                  <Button 
-                    variant="primary" 
-                    className="mt-3 w-100" 
-                    onClick={() => handleAddToCart(item.id)}
-                    disabled={cart[item.id]}
-                  >
-                    {cart[item.id] ? 'Añadido' : 'Agregar al carrito'}
-                  </Button>
-                </Card.Body>
-              </Card>
+            <Card className="shadow-lg rounded card-equal-height" data-aos="zoom-in" data-aos-duration="1000">
+  <Card.Img variant="top" src={item.imagepath} className="card-img-top" />
+  <Card.Body>
+    <Card.Title className="text-center text-uppercase">{item.nombre}</Card.Title>
+    <Card.Text className="text-center text-muted">{item.descripcion}</Card.Text>
+    <div className="d-flex justify-content-between align-items-center">
+      <span className="text-primary fw-bold">${item.precio}</span>
+      <div className="d-flex align-items-center">
+        <Button
+          variant={item.quantity > 0 ? "primary" : "secondary"}
+          onClick={() => handleQuantityChange(item.id, -1)}
+          disabled={item.quantity <= 0 || cart[item.id]}
+        >
+          -
+        </Button>
+        <span className="mx-2 fw-bold">{item.quantity || 0}</span>
+        <Button
+          variant="primary"
+          onClick={() => handleQuantityChange(item.id, 1)}
+          disabled={item.quantity >= 3 || cart[item.id]}
+        >
+          +
+        </Button>
+      </div>
+    </div>
+    <Button
+      variant="dark" // Negro
+      className="mt-3 w-100 text-white" // Texto blanco
+      onClick={() => handleAddToCart(item.id)}
+      disabled={cart[item.id]}
+    >
+      {cart[item.id] ? 'Añadido' : 'Agregar al carrito'}
+    </Button>
+  </Card.Body>
+</Card>
+
             </Col>
           ))}
         </Row>

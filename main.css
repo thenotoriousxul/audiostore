@@ -93,3 +93,25 @@
   flex-direction: column;
   justify-content: space-between;
 }
+
+/* Asegura que todos los cards tengan la misma altura */
+.card-equal-height {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+
+
+/* Estilo para el botón negro con letras blancas */
+button.btn-dark {
+  background-color: black;
+  color: white;
+  border: none;
+  font-weight: bold;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  transition: transform 0.3s ease;
+}
