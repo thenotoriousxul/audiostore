@@ -23,6 +23,7 @@ const Login = () => {
         const data = await response.json();
         console.log('Iniciando sesión con:', data);
         localStorage.setItem('token', data.accessToken);
+        localStorage.setItem('userId', data.id);
         navigate('/catalogo');
       } else {
         const errorData = await response.json();
